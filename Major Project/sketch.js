@@ -6,19 +6,18 @@
 // - describe what you did to take this project "above and beyond"
 
 let floor, wall, stoneWall, skeleton, player, coins;
-let levelBackground;
 let tiles;
 let tilesHigh, tilesWide;
 let tileWidth, tileHeight;
-let levelToLoad;
+let level;
 let lines;
 let playerX = 0;
 let playerY = 0;
 
 function preload() {
   // loading level from txt file 
-  levelToLoad = "level/e1m1.txt"
-  lines = loadstrings(levelToLoad);
+  level = "levels/e1m1.txt"
+  lines = loadStrings(level);
 
   floor = loadImage("assets/sprites/e1m1_floor.png");
   player = loadImage("assets/sprites/cadence.gif");
@@ -46,6 +45,15 @@ function setup() {
 
 function draw() {
   background(255);
+  display();
+}
+
+function display() {
+  for (let y = 0; y < tilesHigh; y++) {
+    for (let x = 0; x < tilesWide; x++) {
+      showTile(tiles[x][y], x, y);
+    }
+  }
 }
 
 function createEmpty2dArray(cols, rows) {
