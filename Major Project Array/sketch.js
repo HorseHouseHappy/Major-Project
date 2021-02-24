@@ -13,11 +13,32 @@ let level;
 let lines;
 let playerX = 10;
 let playerY = 10;
+let map = {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0],
+          [0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0],
+          [0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0],
+          [0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0],
+          [0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0],
+          [0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,9,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,0],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+
 
 function preload() {
   // loading level from txt file 
-  level = "levels/e1m1.txt"
-  lines = loadStrings(level);
+  // level = "levels/e1m1.txt"
+  // lines = loadStrings(level);
 
   levelBackground = loadImage("assets/sprites/e1m1_background.png");
   player = loadImage("assets/sprites/cadence.gif");
@@ -75,19 +96,19 @@ function createEmpty2dArray(cols, rows) {
 }
 
 function showTile(location, x, y) {
-  if (location === "#") {
+  if (location === 0) {
     image(wall, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
-  else if (location === "C") {
+  else if (location === 1) {
     image(coins, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
-  else if (location === "B") {
+  else if (location === 2) {
     image(skeleton, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
-  else if (location === "P") {
+  else if (location === 9) {
     image(player, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
-  else if (location === "S") {
+  else if (location === 3) {
     image(slime, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
   // else {
@@ -125,7 +146,7 @@ function keyPressed() {
 function movePlayer(x, y, oldX, oldY, direction) {
   if (x >= 0 && x < tilesWide && y >= 0 && y < tilesHigh && tiles[y][x] !== 1) {
     tiles[y][x] = 9;
-    tiles[oldY][oldX] = 0;
+    tiles[oldY][oldX] = "";
 
     if (direction === "right") {
       playerX += 1;
