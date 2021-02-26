@@ -13,6 +13,12 @@ let level;
 let lines;
 let playerX = 10;
 let playerY = 10;
+let currentTime;
+let timeOfBeat = 520;
+let allowedVariation = 100;
+let lateHit, earlyHit;
+let e1m1Music;
+let currentSong;
 
 function preload() {
   // loading level from txt file 
@@ -25,13 +31,13 @@ function preload() {
   // coins = loadImage("assets/sprites/coins.png");
   slime = loadImage("assets/sprites/green_slime.png");
   skeleton = loadImage("assets/sprites/white_skeleton.png");
-
-  // load other sprites as needed
   
+  e1m1Music = loadSound("assets/music/e1m1_disco_descent.mp3");
 }
 
 function setup() {
   createCanvas(1000, 750);
+  currentTime = millis();
   tilesHigh = lines.length;
   tilesWide = lines[0].length;
 
@@ -46,11 +52,15 @@ function setup() {
       tiles[x][y] = tileType;
     }
   }
+
+  currentSong = e1m1Music;
+  currentSong.play();
 }
 
 function draw() {
   background(0);
   display();
+  keepTime();
 }
 
 function display() {
@@ -60,7 +70,7 @@ function display() {
     for (let x = 0; x < tilesWide; x++) {
       showTile(tiles[x][y], x, y);
     }
-  }
+  } 
 }
 
 function createEmpty2dArray(cols, rows) {
@@ -95,37 +105,33 @@ function showTile(location, x, y) {
   // }
 }
 
+function keepTime() {
+  if (currentTime % timeOfBeat === 0) {
+    timeOfBeat += currentTime;
+  }
+  lateHit = timeOfBeat + allowedVariation;
+  earlyHit = timeOfBeat - allowedVariation;
+}
+
 function keyPressed() {
-  if (key === "d") {
+  if (key === "s" && currentTime < lateHit && currentTime > earlyHit) {
     movePlayer(playerX+1, playerY, playerX, playerY, "right");
   }
-  if (key === "a") {
+  if (key === "w" && currentTime < lateHit && currentTime > earlyHit) {
     movePlayer(playerX-1, playerY, playerX, playerY, "left");
   }
-  if (key === "s") {
+  if (key === "d" && currentTime < lateHit && currentTime > earlyHit) {
     movePlayer(playerX, playerY+1, playerX, playerY, "down");
   }
-  if (key === "w") {
-    movePlayer(playerX, playerY-1, playerX, playerY, "up");
-  }
-  if (keyCode === RIGHT_ARROW) {
-    movePlayer(playerX+1, playerY, playerX, playerY, "right");
-  }
-  if (keyCode === LEFT_ARROW) {
-    movePlayer(playerX-1, playerY, playerX, playerY, "left");
-  }
-  if (keyCode === DOWN_ARROW) {
-    movePlayer(playerX, playerY+1, playerX, playerY, "down");
-  }
-  if (keyCode === UP_ARROW) {
+  if (key === "a" && currentTime < lateHit && currentTime > earlyHit) {
     movePlayer(playerX, playerY-1, playerX, playerY, "up");
   }
 }
 
 function movePlayer(x, y, oldX, oldY, direction) {
-  if (x >= 0 && x < tilesWide && y >= 0 && y < tilesHigh && tiles[y][x] !== 1) {
-    tiles[y][x] = 9;
-    tiles[oldY][oldX] = 0;
+  if (x >= 0 && x < tilesWide && y >= 0 && y < tilesHigh && tiles[y][x] !== "#") {
+    tiles[y][x] = "P";
+    tiles[oldY][oldX] = ".";
 
     if (direction === "right") {
       playerX += 1;
