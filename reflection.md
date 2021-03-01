@@ -18,6 +18,8 @@ together ways to make it work. I'm not sure if this was because I didn't use the
 
 - Try to work on the project more consistently.
 
+- Don't try to recreate a such a complex game in that short of time.
+
 ## Needs To Have
 Despite my efforts I didn't manage to get everything on my Needs To Have list done, even after my expecations were lowered.
 
