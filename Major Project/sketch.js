@@ -3,7 +3,7 @@
 // 1/3/2020
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// nothin
 
 let floor, wall, stoneWall, skeleton, player, coins;
 let tiles;
