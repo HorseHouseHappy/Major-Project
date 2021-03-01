@@ -5,9 +5,9 @@ I'll be trying to make a coppy of the game Crypt Of The Necrodancer. It is a rhy
 ## Needs To Have
 - Movement and actions locked to the beat of the song playing.
 - A map with music.
-- An that can either chase the player or move in a pattern, also to the beat of the song.
+- An enemy that can either chase the player or move in a pattern, also to the beat of the song.
 - Health indicator and item slots.
-- Hand made maps.
+- Hand made map.
 
 ## Nice To Have
 - More enemies.

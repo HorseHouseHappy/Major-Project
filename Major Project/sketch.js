@@ -1,6 +1,6 @@
 // Crypt Of The Necrodancer 2: the electric boogaloo
 // Liam Ma
-// Date
+// 1/3/2020
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
@@ -25,8 +25,8 @@ function preload() {
   level = "levels/e1m1.txt"
   lines = loadStrings(level);
 
-  levelBackground = loadImage("assets/sprites/e1m1_background.png");
-  player = loadImage("assets/sprites/cadence.gif");
+  floor = loadImage("assets/sprites/e1m1_floor.png");
+  player = loadImage("assets/sprites/cadence+.png");
   wall = loadImage("assets/sprites/e1m1_wall_stone_half.png");
   // coins = loadImage("assets/sprites/coins.png");
   slime = loadImage("assets/sprites/green_slime.png");
@@ -36,8 +36,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 750);
-  currentTime = millis();
+  createCanvas(1200, 900);
   tilesHigh = lines.length;
   tilesWide = lines[0].length;
 
@@ -55,17 +54,17 @@ function setup() {
 
   currentSong = e1m1Music;
   currentSong.play();
+  tiles[playerY][playerX] = "P";
 }
 
 function draw() {
+  currentTime = millis();
   background(0);
   display();
   keepTime();
 }
 
 function display() {
-  image(levelBackground, 0, 0, width, height);
-
   for (let y = 0; y < tilesHigh; y++) {
     for (let x = 0; x < tilesWide; x++) {
       showTile(tiles[x][y], x, y);
@@ -100,14 +99,14 @@ function showTile(location, x, y) {
   else if (location === "S") {
     image(slime, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
-  // else {
-  //   image(floor, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-  // }
+  else {
+    image(floor, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+  }
 }
 
 function keepTime() {
   if (currentTime % timeOfBeat === 0) {
-    timeOfBeat += currentTime;
+    timeOfBeat += 520;
   }
   lateHit = timeOfBeat + allowedVariation;
   earlyHit = timeOfBeat - allowedVariation;
@@ -145,5 +144,16 @@ function movePlayer(x, y, oldX, oldY, direction) {
     if (direction === "up") {
       playerY -= 1;
     }
+  }
+}
+
+class Slime {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  move() {
+
   }
 }
