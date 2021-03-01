@@ -16,9 +16,9 @@ let playerY = 10;
 let currentTime;
 let timeOfBeat = 520;
 let allowedVariation = 100;
-let lateHit, earlyHit;
 let e1m1Music;
 let currentSong;
+let begin = false;
 
 function preload() {
   // loading level from txt file 
@@ -31,6 +31,7 @@ function preload() {
   // coins = loadImage("assets/sprites/coins.png");
   slime = loadImage("assets/sprites/green_slime.png");
   skeleton = loadImage("assets/sprites/white_skeleton.png");
+  heart = loadImage("assets/sprites/heart.png");
   
   e1m1Music = loadSound("assets/music/e1m1_disco_descent.mp3");
 }
@@ -53,16 +54,16 @@ function setup() {
   }
 
   currentSong = e1m1Music;
-  currentSong.play();
-  tiles[playerY][playerX] = "P";
+  tiles[playerX][playerY] = "P";
 }
 
 function draw() {
   currentTime = millis();
   background(0);
   display();
-  keepTime();
+  beatVisual();
 }
+
 
 function display() {
   for (let y = 0; y < tilesHigh; y++) {
@@ -70,6 +71,7 @@ function display() {
       showTile(tiles[x][y], x, y);
     }
   } 
+  beatVisual();
 }
 
 function createEmpty2dArray(cols, rows) {
@@ -104,27 +106,27 @@ function showTile(location, x, y) {
   }
 }
 
-function keepTime() {
-  if (currentTime % timeOfBeat === 0) {
-    timeOfBeat += 520;
-  }
-  lateHit = timeOfBeat + allowedVariation;
-  earlyHit = timeOfBeat - allowedVariation;
-}
-
 function keyPressed() {
-  if (key === "s" && currentTime < lateHit && currentTime > earlyHit) {
+  if (key === "s" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX+1, playerY, playerX, playerY, "right");
   }
-  if (key === "w" && currentTime < lateHit && currentTime > earlyHit) {
+  if (key === "w" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX-1, playerY, playerX, playerY, "left");
   }
-  if (key === "d" && currentTime < lateHit && currentTime > earlyHit) {
+  if (key === "d" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX, playerY+1, playerX, playerY, "down");
   }
-  if (key === "a" && currentTime < lateHit && currentTime > earlyHit) {
+  if (key === "a" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX, playerY-1, playerX, playerY, "up");
   }
+  if (keyCode === ENTER) {
+    begin = true;
+  }
+
 }
 
 function movePlayer(x, y, oldX, oldY, direction) {
@@ -147,13 +149,41 @@ function movePlayer(x, y, oldX, oldY, direction) {
   }
 }
 
+function beatVisual() {
+  let heartWidth = 50;
+  let heartHeight = 50;
+  let durationOfBeat = 50;
+  let lastSwitchTime = 0;
+  let timeToSwitch = false;
+
+  image(heart, (width /2) - (heartWidth / 2), height - 120, heartWidth, heartHeight);
+
+  if (currentTime - lastSwitchTime > durationOfBeat) {
+    timeToSwitch = !timeToSwitch;
+    lastSwitchTime = currentTime;
+  }
+  
+  if (timeToSwitch) {
+   heartWidth += 15;
+   heartHeight += 15;
+  }
+  
+  else {
+    heartWidth = 50;
+    heartHeight = 50;
+  }
+}
+
 class Slime {
   constructor(x, y) {
     this.x = x;
     this.y = y;
   }
 
-  move() {
+  moveSlime() {
+    if (currentTime % timeOfBeat === 0) {
+      this.y += 1;
 
+    }
   }
 }
