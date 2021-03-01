@@ -19,6 +19,7 @@ let allowedVariation = 100;
 let e1m1Music;
 let currentSong;
 let begin = false;
+let theSlimes = [];
 
 function preload() {
   // loading level from txt file 
@@ -55,13 +56,15 @@ function setup() {
 
   currentSong = e1m1Music;
   tiles[playerX][playerY] = "P";
+
+  let someSlime = new Slime(3, 3);
+  theSlimes.push(someSlime);
 }
 
 function draw() {
   currentTime = millis();
   background(0);
   display();
-  beatVisual();
 }
 
 
@@ -107,19 +110,19 @@ function showTile(location, x, y) {
 }
 
 function keyPressed() {
-  if (key === "s" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  if (key === "d" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
   currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX+1, playerY, playerX, playerY, "right");
   }
-  if (key === "w" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  if (key === "a" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
   currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX-1, playerY, playerX, playerY, "left");
   }
-  if (key === "d" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  if (key === "s" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
   currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX, playerY+1, playerX, playerY, "down");
   }
-  if (key === "a" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
+  if (key === "w" && currentTime % timeOfBeat >= 0 && currentTime % timeOfBeat <= 100 ||
   currentTime % timeOfBeat >= timeOfBeat - allowedVariation && currentTime % timeOfBeat <= timeOfBeat) {
     movePlayer(playerX, playerY-1, playerX, playerY, "up");
   }
@@ -131,8 +134,8 @@ function keyPressed() {
 
 function movePlayer(x, y, oldX, oldY, direction) {
   if (x >= 0 && x < tilesWide && y >= 0 && y < tilesHigh && tiles[y][x] !== "#") {
-    tiles[y][x] = "P";
-    tiles[oldY][oldX] = ".";
+    tiles[x][y] = "P";
+    tiles[oldX][oldY] = ".";
 
     if (direction === "right") {
       playerX += 1;
@@ -178,12 +181,47 @@ class Slime {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.lastMove = "down"
   }
 
-  moveSlime() {
-    if (currentTime % timeOfBeat === 0) {
-      this.y += 1;
+  moveSlime(x, y, oldX, oldY, direction) {
+    if (this.x >= 0 && this.x < tilesWide && this.y >= 0 && this.y < tilesHigh && tiles[y][x] !== "#") {
+      tiles[this.x][this.y] = "S";
+      tiles[oldY][oldX] = ".";
 
+      if (direction === "down") {
+        this.x -= 1;
+        this.lastMove = "left";
+      }
+     if (direction === "left") {
+        this.y -= 1;
+        this.lastMove = "up";
+      }
+      if (direction === "up") {
+        this.x += 1;
+        this.lastMove = "right";
+      }
+      if (direction === "right") {
+        this.y += 1;
+        this.lastMove = "down";
+      }
+    }
+  }
+
+  whenToMove(){
+    if (currentTime % timeOfBeat === 0) {
+      if (this.lastMove === "down") {
+        this.moveSlime(this.x, this.y + 1, this.x, this.y, "left");
+      }
+      if (this.lastMove === "left") {
+        this.moveSlime(this.x - 1, this.y, this.x, this.y, "up");
+      }
+      if (this.lastMove === "up") {
+        this.moveSlime(this.x, this.y - 1, this.x, this.y, "right");
+      }
+      if (this.lastMove === "right") {
+        this.moveSlime(this.x + 1, this.y, this.x, this.y, "down");
+      }
     }
   }
 }
