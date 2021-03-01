@@ -14,7 +14,7 @@ let lines;
 let playerX = 10;
 let playerY = 10;
 let currentTime;
-let timeOfBeat = 520;
+let timeOfBeat = 527;
 let allowedVariation = 100;
 let e1m1Music;
 let currentSong;
@@ -38,6 +38,8 @@ function preload() {
 }
 
 function setup() {
+  let timeToWait = 600;
+
   createCanvas(1200, 900);
   tilesHigh = lines.length;
   tilesWide = lines[0].length;
@@ -55,15 +57,18 @@ function setup() {
   }
 
   currentSong = e1m1Music;
-  tiles[playerX][playerY] = "P";
 
-  let someSlime = new Slime(3, 3);
-  theSlimes.push(someSlime);
+  if (currentTime = timeToWait){
+    currentSong.play();
+  }
+  // let someSlime = new Slime(3, 3);
+  // theSlimes.push(someSlime);
+  tiles[playerX][playerY] = "P";
 }
 
 function draw() {
   currentTime = millis();
-  background(0);
+  background(100);
   display();
 }
 
@@ -74,8 +79,18 @@ function display() {
       showTile(tiles[x][y], x, y);
     }
   } 
-  beatVisual();
+  // beatVisual();
 }
+
+// function startGame() {       just doesn't work for some reason
+//   while (begin) {
+//     display();
+//     currentTime = millis();
+//     currentSong.play();
+//     tiles[playerX][playerY] = "P";
+//     console.log("startgame");
+//   }
+// }
 
 function createEmpty2dArray(cols, rows) {
   let randomGrid = [];
@@ -128,6 +143,7 @@ function keyPressed() {
   }
   if (keyCode === ENTER) {
     begin = true;
+    console.log("begin");
   }
 
 }
@@ -152,30 +168,30 @@ function movePlayer(x, y, oldX, oldY, direction) {
   }
 }
 
-function beatVisual() {
-  let heartWidth = 50;
-  let heartHeight = 50;
-  let durationOfBeat = 50;
-  let lastSwitchTime = 0;
-  let timeToSwitch = false;
+// function beatVisual() {        also doesnt work
+//   let heartWidth = 50;
+//   let heartHeight = 50;
+//   let durationOfBeat = 50;
+//   let lastSwitchTime = 0;
+//   let timeToSwitch = false;
 
-  image(heart, (width /2) - (heartWidth / 2), height - 120, heartWidth, heartHeight);
+//   image(heart, (width /2) - (heartWidth / 2), height - 120, heartWidth, heartHeight);
 
-  if (currentTime - lastSwitchTime > durationOfBeat) {
-    timeToSwitch = !timeToSwitch;
-    lastSwitchTime = currentTime;
-  }
+//   if (currentTime - lastSwitchTime > durationOfBeat) {
+//     timeToSwitch = !timeToSwitch;
+//     lastSwitchTime = currentTime;
+//   }
   
-  if (timeToSwitch) {
-   heartWidth += 15;
-   heartHeight += 15;
-  }
+//   if (timeToSwitch) {
+//    heartWidth += 15;
+//    heartHeight += 15;
+//   }
   
-  else {
-    heartWidth = 50;
-    heartHeight = 50;
-  }
-}
+//   else {
+//     heartWidth = 50;
+//     heartHeight = 50;
+//   }
+// }
 
 class Slime {
   constructor(x, y) {
